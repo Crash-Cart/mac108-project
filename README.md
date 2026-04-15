@@ -1,6 +1,10 @@
 # mac108-project
 My project for Intro to Python (MAC 108) at LaG CC
 
+![Neovim](https://img.shields.io/badge/Editor-Neovim-57A143?logo=neovim)  
+![Python](https://img.shields.io/badge/Python-3.14%2B-blue?logo=python)  
+![License](https://img.shields.io/badge/license-_MIT_-fb542b)
+
 ## Planning  
 
 ### Scripting  
