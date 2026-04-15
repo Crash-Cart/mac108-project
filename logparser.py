@@ -13,15 +13,15 @@ listed_fails = []
 with open('sample_auth.log') as log:  # CHANGE to '/var/log/auth.log' before deployment
     for line in log:
         failed_attempts = re.search('Failed', line)
-        # does this return an object and make it into a list or do I need to restructure the code?
         if failed_attempts:
             listed_fails.append(line)
-        #print(failed_attempts)
+        # Parse file for failed login attempts and add to a list.
 
 
 ip_a = []
 for fail in listed_fails:
     ip_a.append(re.findall(r'(\b(?:\d{1,3}\.){3}\d{1,3}\b)', fail, re.X))
+    # Add IPs to a list
 
     '''I had to ask claude for help, specifying not to give the answer:
         
@@ -38,6 +38,10 @@ for fail in listed_fails:
         Give it another shot with that in mind — how would you chain those pieces together?'''
 
 
-print(ip_a)
+''' count fails and IPS  -- format into dictionary(?) '''
 
-print(listed_fails)
+if __main__ == "__main__':
+    # print fail logs
+    print(listed_fails)
+    # check list of IP addresses
+    print(ip_a)
