@@ -40,8 +40,11 @@ for fail in listed_fails:
 
 ''' count fails and IPS  -- format into dictionary(?) '''
 
-if __main__ == "__main__':
+if __name__ == "__main__":
     # print fail logs
+    print('Fails')
     print(listed_fails)
+    print()
+    print('Logged IPs')
     # check list of IP addresses
     print(ip_a)
