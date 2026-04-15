@@ -35,8 +35,10 @@ My project for Intro to Python (MAC 108) at LaG CC
 
 ### Video Presentation  
 
-1. PPT Slides (No more than 5)
-2. 
+Guidelines:
+- PPT Slides (No more than 5)
+- Max 10 min video, visible the whole time
+
 
 ---
 
