@@ -25,3 +25,17 @@ My project for Intro to Python (MAC 108) at LaG CC
 
 1. PPT Slides (No more than 5)
 2. 
+
+---
+
+### Network/Attack Surface
+- Options:
+    - Set up a honeypot on azure or aws
+        - Pros: Can set up a true SIEM to compare outcomes 
+        - Cons: Might get expensive if not monitored closely
+    - Create a VLAN on home network and simulate attacks
+        - Easier to implement
+        - No "real" hands-on experience
+    - Use my existing web domain in some way?
+        - No idea how to go about this, will have to consult a lot of documentation. 
+
