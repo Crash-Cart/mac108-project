@@ -8,10 +8,10 @@ My project for Intro to Python (MAC 108) at LaG CC
 ![Static Badge](https://img.shields.io/badge/BTW-Arch?style=plastic&logo=archlinux&logoColor=%231793D1&labelColor=black&color=%231793D1)
 
 
-## Planning  
+## Planning
 
 
-### Scripting  
+### Scripting
 
 - Create a file to parse auth logs for failed attempts and identify patterns
 
@@ -33,7 +33,7 @@ My project for Intro to Python (MAC 108) at LaG CC
 
 ---
 
-### Video Presentation  
+### Video Presentation
 
 Guidelines:
 - PPT Slides (No more than 5)
@@ -57,6 +57,7 @@ Guidelines:
         - No idea how to go about this, will have to consult a lot of documentation. 
 # Notes:
 - func `parse_time()` is unfortunately limited in timezone information. I believe making the script timezone aware would have been overkill for the scope of this project.
+- I would like to use this project for the future implementation of a more involved project. I would like to add a SQL database backend for reliable and persistant storage and rewrite to be compatable with other non-Linux systems.
 
 ***
 

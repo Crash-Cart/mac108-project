@@ -12,57 +12,83 @@ Author: NAME_HERE, LaGuardia Community College, MAC 108 sec.3033
 |   [x] def then def main and call each as needed, move top logic to main   |
 |   [x] count fails and IPS  -- format into dictionary(?)                   |
 |   [1/2] pull/merge machines & sync repo                                   |
-|   [ ] Change name before submitting                                       |
+|   [ ] Change my name before submitting                                       |
 |                                                                           |
 *****************************************************************************
 """
 import re
 from datetime import datetime
+import logging
+
 # ruff: noqa: FURB167
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)  # .disabled = True
+
 
 def parse_time(line):
     '''DOCSTRING'''
     time_string = ' '.join(line.split()[:3])
     time_string = f'{datetime.now().year} {time_string}'
-    return datetime.strptime(time_string, "%Y %b %d %H:%M:%S")  #noqa
-     
-def parse_fail_attempts(line):
-    auth_failed = []
-    failed_attempts = re.search('Failed', line)
-    if failed_attempts:
-        auth_failed.append(line)
-    return auth_failed
+    return datetime.strptime(time_string, "%Y %b %d %H:%M:%S")  # noqa
 
-def parse_ip(line):
-    '''Extract IPs and add to a list'''
+
+def parse_attempts(line):
+    auth_failed = []
+    auth_accept = []
+    if re.search('Failed', line):
+        auth_failed.append(line)
+    if re.search('Accepted', line):
+        auth_accept.append(line)
+    return auth_failed, auth_accept
+
+
+def parse_ip(lines):
+    '''Extract IPs from a list of log lines and return (ip_list, {ip: count})'''
     ip_a = []
-    for fail in line:
-        ip_a += re.findall(r'(\b(?:\d{1,3}\.){3}\d{1,3}\b)', fail, re.X)
+    for line in lines:
+        ip_a += re.findall(r'(\b(?:\d{1,3}\.){3}\d{1,3}\b)', line, re.X)
     ip_a.sort()
     try:
         counts = {x: ip_a.count(x) for x in set(ip_a)}
     except ValueError:
+        logging.error('ValueError', exc_info=True)
         counts = None
     return ip_a, counts
 
 
+def check_warnings(failed_counts, accept_counts):
+    '''Warn if an IP has 2 or more failed attempts'''
+    for ip, count in failed_counts.items():
+        if count >= 2:
+            accepted = accept_counts.get(ip, 0)
+            print(
+                f'WARNING: {ip} has {count} failed attempt(s), {accepted} accepted')
+
+
 # ------------- logic ----------------
 def main():
-    entries = []  # should I use a dictionary? The world will never know.
+    auth_failed = []
+    auth_accept = []
     with open('sample_auth.log') as log:
         # CHANGE to '/var/log/auth.log' (/or/other/path) before deployment
         for line in log:
-            if "Failed" in line:
-                entries.extend(parse_fail_attempts(line))
-# how do i sort this in chrono order? (use timestamp) 
-    ip_list, ip_dic = parse_ip(entries)
-   # ip_count = dict(map(lambda ip, count: (ip, count), )) 
-    entries.sort(key=parse_time)
-    print(ip_dic)
-    print(ip_list)
-    for entry in entries:
-        print(entry)
+            failed, accepted = parse_attempts(line)
+            auth_failed.extend(failed)
+            auth_accept.extend(accepted)
+            logging.debug('sending line to attempt parse')
+
+    _, failed_counts = parse_ip(auth_failed)
+    _, accept_counts = parse_ip(auth_accept)
+    auth_failed.sort(key=parse_time)
+    auth_accept.sort(key=parse_time)
+
+    # testing
+    logger.info(f'failed IP counts: {failed_counts}')
+    logger.info(f'accepted IP counts: {accept_counts}')
+
+    check_warnings(failed_counts, accept_counts)
 
 
 if __name__ == "__main__":
-    main() 
+    main()
