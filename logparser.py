@@ -1,29 +1,30 @@
 #!/usr/bin/env python3
 """
 Intro to Python Project
-This is a script will open and parse access log files and consolidate data. 
+This is a script will open and parse access log files and consolidate data.
 The data will be used to identify patterns in login attempts.
 Author: NAME_HERE, LaGuardia Community College, MAC 108 sec.3033
-Sources: claude.ai, https://www.w3schools.com/python/python_regex.asp , https://docs.python.org/3/library/re.html , https://www.w3schools.com/python/python_datetime.asp 
 
 *****************************************************************************
 |                                                                           |
 | TODO:                                                                     |
 |                                                                           |
-|   [ ] def then def main and call each as needed, move top logic to main   |
+|   [x] def then def main and call each as needed, move top logic to main   |
+|   [x] count fails and IPS  -- format into dictionary(?)                   |
+|   [1/2] pull/merge machines & sync repo                                   |
 |   [ ] Change name before submitting                                       |
-|   [ ] count fails and IPS  -- format into dictionary(?)                   |
-|   [ ] pull/merge desktop to sync repo                                     |
 |                                                                           |
 *****************************************************************************
 """
 import re
 from datetime import datetime
-
+# ruff: noqa: FURB167
 
 def parse_time(line):
+    '''DOCSTRING'''
     time_string = ' '.join(line.split()[:3])
-    return datetime.strptime(time_string, "%b %d %H:%M:%S")  #noqa
+    time_string = f'{datetime.now().year} {time_string}'
+    return datetime.strptime(time_string, "%Y %b %d %H:%M:%S")  #noqa
      
 def parse_fail_attempts(line):
     auth_failed = []
@@ -33,46 +34,35 @@ def parse_fail_attempts(line):
     return auth_failed
 
 def parse_ip(line):
+    '''Extract IPs and add to a list'''
     ip_a = []
     for fail in line:
-        ip_a.append(re.findall(r'(\b(?:\d{1,3}\.){3}\d{1,3}\b)', fail, re.X))  #noqa
-        # Add IPs to a list
-    return ip_a
+        ip_a += re.findall(r'(\b(?:\d{1,3}\.){3}\d{1,3}\b)', fail, re.X)
+    ip_a.sort()
+    try:
+        counts = {x: ip_a.count(x) for x in set(ip_a)}
+    except ValueError:
+        counts = None
+    return ip_a, counts
 
-'''I had to ask claude for help, specifying not to give the answer:
-        
-        You're on the right track with the structure — 
-        regex for IP addresses is one of those ones that's genuinely tricky to figure out from scratch. 
-        Let me give you a hint rather than the answer.
-        An IPv4 address is just four groups of numbers separated by dots. 
-        Each group is 1-3 digits. In regex:
 
-        \\d{1,3} matches 1 to 3 digits
-        \\. matches a literal dot
-
-        So you need four of those groups with dots between them. 
-        Give it another shot with that in mind — how would you chain those pieces together?'''
-
-# ------------- logic ---------------- 
+# ------------- logic ----------------
 def main():
-    entries = []  # should I use a dictionary? The world will never know. 
-    with open('sample_auth.log') as log:  
+    entries = []  # should I use a dictionary? The world will never know.
+    with open('sample_auth.log') as log:
         # CHANGE to '/var/log/auth.log' (/or/other/path) before deployment
         for line in log:
             if "Failed" in line:
                 entries.extend(parse_fail_attempts(line))
-# how do i sort this in chrono order?
-    entries.sort()
+# how do i sort this in chrono order? (use timestamp) 
+    ip_list, ip_dic = parse_ip(entries)
+   # ip_count = dict(map(lambda ip, count: (ip, count), )) 
+    entries.sort(key=parse_time)
+    print(ip_dic)
+    print(ip_list)
     for entry in entries:
         print(entry)
 
 
 if __name__ == "__main__":
-    # print fail logs
-    print('Fails')
-    # print(auth_failed)
-    print()
-    print('Logged IPs')
-    # check list of IP addresses
-    # print(ip_a)
     main() 

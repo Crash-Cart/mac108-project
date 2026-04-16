@@ -55,4 +55,15 @@ Guidelines:
     
     - Use my existing web domain in some way?
         - No idea how to go about this, will have to consult a lot of documentation. 
+# Notes:
+- func `parse_time()` is unfortunately limited in timezone information. I believe making the script timezone aware would have been overkill for the scope of this project.
 
+***
+
+# Sources Used:
+
+- [w3schools - regex](https://www.w3schools.com/python/python_regex.asp)
+- [Python-3 Docs - regex](https://docs.python.org/3/library/re.html)
+- [Claude](https://claude.ai)
+- [w3schools - datetime](https://www.w3schools.com/python/python_datetime.asp)
+- [Python-3 Docs - datetime](https://docs.python.org/3/library/datetime.html#module-datetime)
