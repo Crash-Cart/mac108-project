@@ -68,3 +68,5 @@ Guidelines:
 - [Claude](https://claude.ai)
 - [w3schools - datetime](https://www.w3schools.com/python/python_datetime.asp)
 - [Python-3 Docs - datetime](https://docs.python.org/3/library/datetime.html#module-datetime)
+- [Python-3 Docs - time](https://docs.python.org/3/library/time.html)
+- [Python-3 Docs - schedule](https://docs.python.org/3/library/sched.html) 

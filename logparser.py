@@ -3,37 +3,26 @@
 Intro to Python Project
 This is a script will open and parse access log files and consolidate data.
 The data will be used to identify patterns in login attempts.
-Author: NAME_HERE, LaGuardia Community College, MAC 108 sec.3033
-
-*****************************************************************************
-|                                                                           |
-| TODO:                                                                     |
-|                                                                           |
-|   [x] def then def main and call each as needed, move top logic to main   |
-|   [x] count fails and IPS  -- format into dictionary(?)                   |
-|   [1/2] pull/merge machines & sync repo                                   |
-|   [ ] Change my name before submitting                                       |
-|                                                                           |
-*****************************************************************************
+Author: Crash-Cart (J.S.), LaGuardia Community College, MAC 108 sec.3033
+April 17, 2026
 """
 import re
 from datetime import datetime
 import logging
 
-# ruff: noqa: FURB167
-
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.CRITICAL)
 logger = logging.getLogger(__name__)  # .disabled = True
 
 
 def parse_time(line):
-    '''DOCSTRING'''
+    '''Sort and format time'''
     time_string = ' '.join(line.split()[:3])
     time_string = f'{datetime.now().year} {time_string}'
     return datetime.strptime(time_string, "%Y %b %d %H:%M:%S")  # noqa
 
 
 def parse_attempts(line):
+    """Find and return auth attempt status."""
     auth_failed = []
     auth_accept = []
     if re.search('Failed', line):
@@ -70,13 +59,12 @@ def check_warnings(failed_counts, accept_counts):
 def main():
     auth_failed = []
     auth_accept = []
-    with open('sample_auth.log') as log:
-        # CHANGE to '/var/log/auth.log' (/or/other/path) before deployment
+    with open('/var/log/auth.log') as log:
         for line in log:
             failed, accepted = parse_attempts(line)
             auth_failed.extend(failed)
             auth_accept.extend(accepted)
-            logging.debug('sending line to attempt parse')
+            logging.info('sending line to attempt parse')
 
     _, failed_counts = parse_ip(auth_failed)
     _, accept_counts = parse_ip(auth_accept)
