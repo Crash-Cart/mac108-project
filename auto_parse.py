@@ -8,4 +8,4 @@ schedule.every().minute.at(':01').do(main)
 
 while True:
     schedule.run_pending()
-    time.sleep(60)
+    time.sleep(0.5)
