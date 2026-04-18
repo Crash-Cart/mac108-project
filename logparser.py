@@ -13,12 +13,9 @@ import logging
 logging.basicConfig(level=logging.CRITICAL)
 logger = logging.getLogger(__name__)  # .disabled = True
 
-
 def parse_time(line):
-    '''Sort and format time'''
-    time_string = ' '.join(line.split()[:3])
-    time_string = f'{datetime.now().year} {time_string}'
-    return datetime.strptime(time_string, "%Y %b %d %H:%M:%S")  # noqa
+    time_string = line.split()[0]
+    return datetime.fromisoformat(time_string)
 
 
 def parse_attempts(line):
@@ -45,14 +42,15 @@ def parse_ip(lines):
         counts = None
     return ip_a, counts
 
-
+warnings = {}
 def check_warnings(failed_counts, accept_counts):
     '''Warn if an IP has 2 or more failed attempts'''
     for ip, count in failed_counts.items():
-        if count >= 2:
+        if count >= 2 and warningss/get(ip) !count:
             accepted = accept_counts.get(ip, 0)
             print(
                 f'WARNING: {ip} has {count} failed attempt(s), {accepted} accepted')
+            warnings.[ip] = count
 
 
 # ------------- logic ----------------

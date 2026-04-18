@@ -4,7 +4,7 @@ import schedule
 import time
 from logparser import main
 
-schedule.every().hour.do(main)
+schedule.every().minute.at(':01').do(main)
 
 while True:
     schedule.run_pending()
