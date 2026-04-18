@@ -46,11 +46,11 @@ warnings = {}
 def check_warnings(failed_counts, accept_counts):
     '''Warn if an IP has 2 or more failed attempts'''
     for ip, count in failed_counts.items():
-        if count >= 2 and warningss/get(ip) !count:
+        if count >= 2 and warnings.get(ip) != count:
             accepted = accept_counts.get(ip, 0)
             print(
                 f'WARNING: {ip} has {count} failed attempt(s), {accepted} accepted')
-            warnings.[ip] = count
+            warnings[ip] = count
 
 
 # ------------- logic ----------------
